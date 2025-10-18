@@ -1,42 +1,22 @@
-# MatMul — CPU & CUDA Matrix Multiplication
+# Game of Life — C (1-D array implementation)
 
-Implementations and benchmarks for matrix–matrix multiplication across **CPU** and **GPU** paths:
-
-- Naïve C/C++ CPU baseline
-- Optimized CPU via **BLAS** (`cblas_dgemm`, e.g., Intel MKL / OpenBLAS)
-- CUDA GPU kernels (naïve global-memory & shared-memory tiled)
-- **cuBLAS** (`cublasDgemm`) reference
-
-The goal is to compare correctness and performance across these variants on the same problem sizes.
+A compact C implementation of Conway’s **Game of Life** that represents the 2-D grid in a **single 1-D array**. This approach keeps the code simple and cache-friendly and serves as a clear baseline for experimenting with neighbor lookups and iteration strategies.
 
 ---
 
 ## Features
 
-- **Multiple backends**: CPU naive, CPU BLAS, CUDA naive, CUDA shared, cuBLAS
-- **Comparable interfaces** so you can sweep matrix sizes and collect timings
-- **Single precision / double precision** ready (toggle typedef or template)
-- **Deterministic seeding** for reproducible inputs
-- **Simple CSV logging** for plots
-
-> Note: The repository currently includes starter CUDA code and a README; you can add BLAS/CPU files as shown below if they’re not already present.
+- **Single-file C program** (`GameofLife.c`)
+- **1-D array backing** for a 2-D grid (flat indexing: `i * width + j`)
+- **Compile-time debug levels** (`-DDEBUG0`, `-DDEBUG1`, `-DDEBUG2`) for partitioning and progress prints
+- Easy to build and run with any POSIX-like toolchain
 
 ---
 
-## Requirements
+## Quick start
 
-- **C/C++ toolchain** (GCC/Clang or MSVC)
-- **CUDA Toolkit** (for GPU builds; includes cuBLAS)
-- **A BLAS library** for CPU (choose one)
-  - Intel **MKL** (Linux/Windows/macOS)
-  - **OpenBLAS** (portable open-source)
-- Python (optional) for plotting CSV results
-
----
-
-## Build
-
-### 1) CPU (naïve)
+### Build
 
 ```bash
-g++ -O3 -march=native -DNDEBUG -o matmul_cpu src/matmul_cpu_naive.cpp
+# Optimize + warnings; outputs a 'gameoflife' binary
+gcc -O2 -Wall -o gameoflife GameofLife.c
